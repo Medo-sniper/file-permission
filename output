@@ -1,0 +1,17 @@
+Output ---------------------------------------------------------------------------------------------------
+
+ahmad1@ubuntu:~$ chperm
+usage: chperm digits filename
+where digits are three octal numbers is valid (each 0-7)
+filename is the file name
+ahmad1@ubuntu:~$ chperm 855 myfile
+ERROR: chperm: octal representation required for permissions!
+ahmad1@ubuntu:~$ chperm 755 missingfile
+ERROR: chperm: 'missingfile' file not found! 
+ahmad1@ubuntu:~$ ls -l myfile
+-r-x------ 1 ahmad1 ahmad1 0 Nov 19 03:45 myfile
+ahmad1@ubuntu:~$ chperm 755 myfile
+ahmad1@ubuntu:~$ ls -l myfile
+-rwxr-xr-x 1 ahmad1 ahmad1 0 Nov 19 03:45 myfile
+ahmad1@ubuntu:~$ 
+
