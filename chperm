@@ -1,0 +1,106 @@
+#!/bin/bash
+function usage {
+echo "usage: ${0##*/} digits filename"
+echo "where digits are three octal numbers is valid (each 0-7)"
+echo  "filename is the file name"
+}
+function changeperm {
+ur=0
+uw=0
+ux=0
+if [ $d1 -ge 4 ]; then
+  ur=4
+  d1=$(($d1 - $ur))
+fi
+if [ $d1 -ge 2 ]; then
+   uw=2
+   d1=$(($d1 - $uw))
+fi
+if [ $d1 -eq 1 ]; then
+   ux=1
+   d1=$(($d1 - $ux))
+fi
+gr=0
+gw=0
+gx=0
+if [ $d2 -ge 4 ]; then
+  gr=4
+  d2=$(($d2 - $gr))
+fi
+if [ $d2 -ge 2 ]; then
+   gw=2
+   d2=$(($d2 - $gw))
+fi
+if [ $d2 -eq 1 ]; then
+   gx=1
+   d2=$(($d2 - $gx))
+fi
+
+or=0
+ow=0
+ox=0
+if [ $d3 -ge 4 ]; then
+  or=4
+  d3=$(($d3 - $or))
+fi
+if [ $d3 -ge 2 ]; then
+   ow=2
+   d3=$(($d3 - $ow))
+fi
+if [ $d3 -eq 1 ]; then
+ox=1
+d3=$(($d3 - $ox))
+fi
+if [ $ur -eq 4 ]; then
+   sudo chmod u+r $filename
+fi
+if [ $uw -eq 2 ]; then
+   sudo chmod u+w $filename
+fi
+if [ $ux -eq 1 ]; then
+   sudo chmod u+x $filename
+fi
+if [ $gr -eq 4 ]; then
+   sudo chmod g+r $filename
+fi
+if [ $gw -eq 2 ]; then
+   sudo chmod g+w $filename
+fi
+if [ $gx -eq 1 ]; then
+   sudo chmod g+x $filename
+fi
+
+if [ $or -eq 4 ]; then
+   sudo chmod o+r $filename
+fi
+if [ $ow -eq 2 ]; then
+   sudo chmod o+w $filename
+fi
+if [ $ox -eq 1 ]; then
+   sudo chmod o+x $filename
+fi
+}
+if [ -z "$1" ] && [ -z "$2" ];then
+usage
+:
+fi
+if [ -n "$1" ] && [ -n "$2" ];then
+          digits=$1
+          filename=$2
+          if [ -e "$filename" ]; then
+              d1=$(echo ${digits:0:1})
+              d2=$(echo ${digits:1:1})
+              d3=$(echo ${digits:2:1})  
+              if [ $d1 -ge 0 ] && [ $d1 -le 7 ]&& [ $d2 -ge 0 ] && [ $d2 -le 7 ] && [ $d3 -ge 0 ] && [ $d3 -le 7 ];then
+                  changeperm
+                  :
+              else
+                  echo "ERROR: chperm: octal representation required for permissions!"
+                  :
+              fi
+           else
+              echo "ERROR: chperm: '$2' file not found! "
+              :
+           fi
+fi
+
